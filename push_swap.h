@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:27:55 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/04 16:18:39 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/06 19:39:22 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PUSH_SWAP_H
@@ -22,11 +22,13 @@ typedef	struct s_pile
 }	t_pile;
 
 void	swap(t_pile **pile);
-void	push(t_pile **pileA, t_pile **pileB);
+int		push(t_pile **pileA, t_pile **pileB);
+void	update_pos(t_pile **pile);
 void	rotate(t_pile **pile);
 void	rev_rotate(t_pile **pile);
 void	free_pile(t_pile **pile);
 int		ft_atoi(const char *nptr);
+void	print_pile(t_pile **pile);
 
 # endif
 

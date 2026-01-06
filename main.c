@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:21:21 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/05 19:47:01 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/06 18:51:24 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,14 @@ void	free_pile(t_pile **pile)
 {
 	t_pile	*node;
 	t_pile	*other_node;
-
+	
+	if (pile == NULL)
+		return ;
+	if (*pile == NULL)
+	{
+		free(pile);
+		return ;
+	}
 	node = (*pile)->next;
 	other_node = NULL;
 	while (node != *pile)
@@ -26,6 +33,7 @@ void	free_pile(t_pile **pile)
 		node = other_node;
 	}
 	free(node);
+	free(pile);
 }
 
 void	print_pile(t_pile **pile)
@@ -34,11 +42,13 @@ void	print_pile(t_pile **pile)
 	int		i;
 
 	i = 0;
-	ft_printf("%d : %d\n", (*pile)->pos, (*pile)->number);
+	if (!pile || *pile == NULL)
+		return ;
+	ft_printf("%d : %d (%p   %p)\n", (*pile)->pos, (*pile)->number, *pile, (*pile)->previous);
 	node = (*pile)->next;
 	while (node != *pile)
 	{
-		ft_printf("%d : %d\n", node->pos, node->number);
+		ft_printf("%d : %d (%p  %p)\n", node->pos, node->number, node, (node)->previous);
 		node = node->next;
 	}
 } 
@@ -91,6 +101,7 @@ static int set_pile(t_pile **head, int ac, char **av)
 int	main(int ac, char **av)
 {
 	t_pile	**pileA;
+	t_pile	**pileB;
 
 	pileA = (t_pile **)malloc(sizeof(t_pile *));
 	if ((ac <= 1 || !is_valid(ac, av)) && pileA)
@@ -98,11 +109,25 @@ int	main(int ac, char **av)
 		ft_printf("Error : %d\n", ac);
 		exit(EXIT_FAILURE);
 	}
+	pileB = (t_pile **)malloc(sizeof(t_pile *));
+	if (!pileB)
+		exit(EXIT_FAILURE);
 	if (!set_pile(pileA, ac, av))
 		exit(EXIT_FAILURE);
+	*pileB = NULL;
+	ft_printf("init_________\n");
 	print_pile(pileA);
+	ft_printf("Resultat apres operations.\n");
 	swap(pileA);
+	push(pileA, pileB);
+	push(pileA, pileB);
+	push(pileA, pileB);
+	push(pileA, pileB);
+	ft_printf("pile A:\n");
 	print_pile(pileA);
+	ft_printf("pile B:\n");
+	print_pile(pileB);
 	free_pile(pileA);
+	free_pile(pileB);
 	return (EXIT_SUCCESS);
 }
