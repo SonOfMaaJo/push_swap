@@ -6,13 +6,13 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:50:14 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/06 19:56:18 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/06 23:41:52 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	update_r_pos(t_pile **pile, int remove)
+static void	*update_r_pos(t_pile **pile, int remove)
 {
 	int		i;
 	t_pile	*node;
@@ -22,6 +22,8 @@ static void	update_r_pos(t_pile **pile, int remove)
 		((*pile)->next)->previous = (*pile)->previous;
 		((*pile)->previous)->next = (*pile)->next;
 		node = *pile;
+		if ((*pile)->next == *pile)
+			return(free_pile(pile), NULL);
 		*pile = (*pile)->next;
 		free(node);
 	}
@@ -32,7 +34,8 @@ static void	update_r_pos(t_pile **pile, int remove)
 	{
 		node->pos = i++;
 		node = node->next;
-	}	
+	}
+	return (NULL);
 }
 
 void	swap(t_pile **pile)
@@ -40,6 +43,8 @@ void	swap(t_pile **pile)
 	int	num_temp;
 
 	if	(pile == NULL || *pile == NULL || (*pile)->next == *pile)
+		return ;
+	if ((*pile)->next == *pile)
 		return ;
 	num_temp = (*pile)->number;
 	(*pile)->number = ((*pile)->next)->number;

@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:27:55 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/06 19:39:22 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/07 02:41:40 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PUSH_SWAP_H
@@ -29,6 +29,10 @@ void	rev_rotate(t_pile **pile);
 void	free_pile(t_pile **pile);
 int		ft_atoi(const char *nptr);
 void	print_pile(t_pile **pile);
+void	rotate_up(int costA, int cost_B, t_pile **pileA, t_pile **pileB);
+void	rotate_down(int costA, int cost_B, t_pile **pileA, t_pile **pileB);
+void	rotate_upA_DB(int costA, int costB, t_pile **pileA, t_pile **pileB);
+void	rotate_DA_upB(int costA, int costB, t_pile **pileA, t_pile **pileB);
 
 # endif
 
