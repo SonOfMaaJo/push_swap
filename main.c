@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:21:21 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/06 23:56:40 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/08 01:10:25 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	free_pile(t_pile **pile)
 		node = other_node;
 	}
 	free(node);
-	*pile = NULL;
+	free(pile);
 }
 
 void	print_pile(t_pile **pile)
@@ -110,27 +110,12 @@ int	main(int ac, char **av)
 	if (!set_pile(pileA, ac, av))
 		return(ft_printf("Error\n"), free(pileB), free(pileA), 1);
 	*pileB = NULL;
-	ft_printf("init_________\n");
+	if (!check_sort(pileA))
+		turk_algorithm(ac, pileA, pileB);
 	print_pile(pileA);
-	ft_printf("Resultat apres operations.\n");
-	swap(pileA);
-	push(pileA, pileB);
-	push(pileA, pileB);
-	push(pileA, pileB);
-	rotate(pileA);
-	rotate(pileB);
-	rev_rotate(pileA);
-	rev_rotate(pileB);
-	swap(pileA);
-	push(pileB, pileA);
-	push(pileB, pileA);
-	push(pileB, pileA);
-	ft_printf("pile A:\n");
-	print_pile(pileA);
-	ft_printf("pile B:\n");
+	ft_printf("-------------------------------------------\n\n");
 	print_pile(pileB);
 	free_pile(pileA);
 	free_pile(pileB);
-	free(pileA);
 	return (EXIT_SUCCESS);
 }

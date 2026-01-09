@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_perfdivp.c                                      :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/22 17:26:34 by vnaoussi          #+#    #+#             */
-/*   Updated: 2025/11/22 20:46:22 by vnaoussi         ###   ########.fr       */
+/*   Created: 2025/11/12 23:44:53 by vnaoussi          #+#    #+#             */
+/*   Updated: 2026/01/08 01:50:59 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "ft_printf.h"
+#include "push_swap.h"
 
-void	ft_perfdivp(unsigned int c, size_t base_len, const char *base, int *len)
+int	ft_strlcat(char *dest, const char *src, int size)
 {
-	if (c < base_len)
+	int		i;
+	int		j;
+	int		src_len;
+
+	i = 0;
+	src_len = ft_strlen(src);
+	while (dest[i] && i < size)
+		i++;
+	if (i == size)
+		return (i + src_len);
+	j = 0;
+	while (src[j] && j < size - i - 1)
 	{
-		ft_putchar(base[c]);
-		*len += 1;
+		dest[i + j] = src[j];
+		j++;
 	}
-	else
-	{
-		ft_perfdivp(c / base_len, base_len, base, len);
-		ft_perfdivp(c % base_len, base_len, base, len);
-	}
+	dest[i + j] = '\0';
+	return (i + src_len);
 }

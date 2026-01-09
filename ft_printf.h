@@ -20,12 +20,12 @@
 
 void	ft_printarg(char format, va_list args, int *len);
 int		ft_putchar(char c);
-int		ft_putstr(char *str);
-int		ft_putnbrbase(long c, char *base);
+int		ft_putstr(const char *str);
+int		ft_putnbrbase(long c, const char *base);
 char	*ft_strchr(const char *s, int c);
 int		ft_printf(const char *format, ...);
-size_t	ft_strlen(char *str);
-void	ft_perfdivp(unsigned int c, size_t base_len, char *base, int *len);
+size_t	ft_strlen(const char *str);
+void	ft_perfdivp(unsigned int c, size_t base_len, const char *base, int *len);
 void	ft_printp(void *p, int *len);
 
 #endif

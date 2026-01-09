@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-int	ft_putnbrbase(long c, char *base)
+int	ft_putnbrbase(long c, const char *base)
 {
 	size_t	base_len;
 	long	nb;

@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:50:14 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/06 23:41:52 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/07 17:53:00 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	push(t_pile **pileA, t_pile **pileB)
 		return (1);
 	node = (t_pile *)malloc(sizeof(t_pile));
 	if (!node)
-		return (free_pile(pileA), free_pile(pileB), 0);
+		return  (0);
 	node->number = (*pileA)->number;
 	node->next = node;
 	node->previous = node;
