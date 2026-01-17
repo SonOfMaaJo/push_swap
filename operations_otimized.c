@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 01:24:07 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/08 02:23:47 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/16 15:26:45 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,135 +14,83 @@
 
 char	*rotate_up(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
-	int		min;
-	int		i;
-	int		size;
-	char	*op;
+	int	min;
+	int	size;
+	char	*operations;
 
-	i = 1;
 	size = (costA + costB) * 4 + 10;
-	op = (char *)malloc(sizeof(char) * size);
-	if (!op)
+	operations = (char *)malloc(sizeof(char) * size);
+	if (!operations)
 		return (NULL);
-	op[0] = '\0';
+	operations[0] = '\0';
 	if (costA < costB)
 		min = costA;
 	else
 		min = costB;
-	while (i++ <= min)
-	{
-		ft_strlcat(op, "rr\n", size);
-		rotate(pileA);
-		rotate(pileB);
-	}
-	i = 1;
-	while (i++ <= costA - min)
-	{
-		ft_strlcat(op, "ra\n", size);
-		rotate(pileA);
-	}
-	i = 1;
-	while (i++ <= costB - min)
-	{
-		ft_strlcat(op, "rb\n", size);
-		rotate(pileB);
-	}
-	return (op);
+	rotate(min, "rr\n", pileA, operations, size);
+	rotate(min, "rb\n", pileB, NULL, size);
+	rotate(costA - min, "ra\n", pileA, operations, size);
+	rotate(costB - min, "rb\n", pileB, operations, size);
+	return (operations);
 }
 
 char	*rotate_down(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
-	int		min;
-	int		size;
-	char	*op;
+	int	min;
+	int	size;
+	char	*operations;
 
 	size = (costA + costB) * 4 + 10;
-	op = (char *)malloc(sizeof(char) * size);
-	if (!op)
+	operations = (char *)malloc(sizeof(char) * size);
+	if (!operations)
 		return (NULL);
-	op[0] = '\0';
+	operations[0] = '\0';
 	if (costA < costB)
 		min = costA;
 	else
 		min = costB;
-	while (min-- > 0)
-	{
-		ft_strlcat(op, "rrr\n", size);
-		rev_rotate(pileA);
-		rev_rotate(pileB);
-	}
-	min = 1;
-	while (min++ <= costA - costB)
-	{
-		ft_strlcat(op, "rra\n", size);
-		rev_rotate(pileA);
-	}
-	min = 1;
-	while (min++ <= costB - costA)
-	{
-		ft_strlcat(op, "rrb\n", size);
-		rev_rotate(pileB);
-	}
-	return (op);
+	rev_rotate(min, "rrr\n", pileA, operations, size);
+	rev_rotate(min, "rrb\n", pileB, NULL, size);
+	rev_rotate(costA - min, "rra\n", pileA, operations, size);
+	rev_rotate(costB - min, "rrb\n", pileB, operations, size);
+	return (operations);
 }
 
 char	*rotate_upA_DB(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
-	int		i;
-	int		size;
-	char	*op;
+	int	size;
+	char	*operations;
 
-	i = 1;
 	size = (costA + costB) * 4 + 10;
-	op = (char *)malloc(sizeof(char) * size);
-	if (!op)
+	operations = (char *)malloc(sizeof(char) * size);
+	if (!operations)
 		return (NULL);
-	op[0] = '\0';
-	while (i++ <= costA)
-	{
-		ft_strlcat(op, "ra\n", size);
-		rotate(pileA);
-	}
-	i = 1;
-	while (i++ <= costB)
-	{
-		ft_strlcat(op, "rrb\n", size);
-		rev_rotate(pileB);
-	}
-	return (op);
+	operations[0] = '\0';
+	rotate(costA, "ra\n", pileA, operations, size);
+	rev_rotate(costB, "rrb\n", pileB, operations, size);
+	return (operations);
 }
 
 char	*rotate_DA_upB(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
-	int		i;
-	int		size;
-	char	*op;
+	int	size;
+	char	*operations;
 
-	i = 1;
 	size = (costA + costB) * 4 + 10;
-	op = (char *)malloc(sizeof(char) * size);
-	if (!op)
+	operations = (char *)malloc(sizeof(char) * size);
+	if (!operations)
 		return (NULL);
-	op[0] = '\0';
-	while (i++ <= costA)
-	{
-		ft_strlcat(op, "rra\n", size);
-		rev_rotate(pileA);
-	}
-	i = 1;
-	while (i++ <= costB)
-	{
-		ft_strlcat(op, "rb\n", size);
-		rotate(pileB);
-	}
-	return (op);
+	operations[0] = '\0';
+	rev_rotate(costA, "rra\n", pileA, operations, size);
+	rotate(costB, "rb\n", pileB, operations, size);
+	return (operations);
 }
 
 int	ccost(int len, int lenB,  int pos, int pos_target)
 {
 	if (pos - 1 <= len / 2 && pos_target - 1 <= lenB / 2)
 	{
-		if (pos  < pos_target)
+		if (pos < pos_target)
 			return (pos_target - 1);
 		else
 			return (pos - 1);

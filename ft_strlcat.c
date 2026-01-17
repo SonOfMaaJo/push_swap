@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 23:44:53 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/08 01:50:59 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:16:47 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
@@ -18,6 +18,8 @@ int	ft_strlcat(char *dest, const char *src, int size)
 	int		src_len;
 
 	i = 0;
+	if (dest == NULL || src == NULL)
+		return (0);
 	src_len = ft_strlen(src);
 	while (dest[i] && i < size)
 		i++;

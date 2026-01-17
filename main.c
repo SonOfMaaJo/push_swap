@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:21:21 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/08 01:10:25 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/17 03:50:04 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	free_pile(t_pile **pile)
 	}
 	free(node);
 	free(pile);
+	pile = NULL;
 }
 
 void	print_pile(t_pile **pile)
@@ -57,13 +58,18 @@ static int	is_valid(int ac, char **av)
 	int	j;
 
 	i = 1;
-	j = 0;
-	while (i++ < ac)
+	while (i < ac)
 	{
 		j = 0;
-		while (av[i - 1][j])
-			if (ft_strchr("0123456789", av[i - 1][j++]) == NULL)
+		if (av[i][j] == '-' && av[i][j + 1])
+			j++;
+		while (av[i][j])
+		{
+			if (ft_strchr("0123456789", av[i][j]) == NULL)
 				return (0);
+			j++;
+		}
+		i++;
 	}
 	return (1);
 }

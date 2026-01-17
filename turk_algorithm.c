@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 14:46:18 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/08 03:21:59 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/17 04:22:54 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	check_sort(t_pile **pile)
 	if (!pile || !*pile)
 		return (1);
 	node = *pile;
-
 	while (node->next != *pile)
 	{
 		if ((node->next)->number < node->number)
@@ -29,28 +28,27 @@ int	check_sort(t_pile **pile)
 	return (1);
 }
 
-int	sort_less_three(t_pile **pile, char **operations)
+static void	sort_less_three(t_pile **pile, char **operations)
 {
-	if (((*pile)->next)->number < (*pile)->number)
+	int	n1;
+	int	n2;
+	int	n3;
+
+	n1 = (*pile)->number;
+	n2 = ((*pile)->next)->number;
+	if ((*pile)->next == (*pile)->previous)
 	{
-		ft_strlcat(*operations, "sa\n", 30000);
-		swap(pile);
-		return (1);
+		if (n1 > n2)
+			swap("sa\n", pile, *operations, THRESHOLD);
+		return ;
 	}
-	if (((*pile)->previous)->number < (*pile)->number)
-	{
-		ft_strlcat(*operations, "rra\n", 30000);
-		rev_rotate(pile);
-		return (1);
-	}
-	if (((*pile)->previous)->number < ((*pile)->next)->number)
-	{
-		ft_strlcat(*operations, "rra\n", 30000);
-		rev_rotate(pile);
-		ft_strlcat(*operations, "sa\n", 30000);
-		swap(pile);
-	}
-	return (1);
+	n3 = ((*pile)->previous)->number;
+	if (n1 > n2 && n1 > n3)
+		rotate(1, "ra\n", pile, *operations, THRESHOLD);
+	else if (n2 > n1 && n2 > n3)
+		rev_rotate(1, "rra\n", pile, *operations, THRESHOLD);
+	if ((*pile)->number > ((*pile)->next)->number)
+		swap("sa\n", pile, *operations, THRESHOLD);
 }
 
 int	process_t_algo(int ac, int len, t_pile **pileA, t_pile **pileB, char **op)
@@ -69,44 +67,50 @@ int	process_t_algo(int ac, int len, t_pile **pileA, t_pile **pileB, char **op)
 		free(cost);
 		if (!ops)
 			return (0);
-		ft_strlcat(*op, ops, 30000);
+		ft_strlcat(*op, ops, THRESHOLD);
 		free(ops);
-		if (!push(pileA, pileB))
+		if (!push("pb\n", pileA, pileB, *op, THRESHOLD))
 			return (0);
-		ft_strlcat(*op, "pb\n", 30000);
 		if (process_t_algo(ac, len - 1, pileA, pileB, op))
 			return (1);
 	}
 	return (0);
 }
 
+static int	final_process(int len, t_pile **pileA, t_pile **pileB, char **op)
+{
+	int	pos;
+
+	if (*pileB == NULL)
+		return (reorder(len, pileA, op), 1);
+	pos = get_pos_target_in_a((*pileB)->number, pileA);
+	if (pos - 1 <= len / 2)
+		rotate(pos - 1, "ra\n", pileA, *op, THRESHOLD);
+	else
+		rev_rotate(len - pos + 1, "rra\n", pileA, *op, THRESHOLD);
+	if (!push("pa\n", pileB, pileA, *op, THRESHOLD))
+		return (0);
+	return (final_process(len + 1, pileA, pileB, op));
+}
+
 int	turk_algorithm(int ac, t_pile **pileA, t_pile **pileB)
 {
-	int		len;
 	char	*operations;
+	int		len;
 
-	operations = (char *)malloc(sizeof(char) * 30000);
+	operations = (char *)malloc(sizeof(char) * THRESHOLD);
 	if (!operations)
 		return (0);
 	operations[0] = '\0';
-
 	len = ac - 1;
-	if (len == 4)
-	{
-		if (!push(pileA, pileB))
-			return (free(operations), 0);
-		ft_strlcat(operations, "pb\n", 30000);
-		len--;
-	}
-	else if (ac - 1 > 4)
-	{
-		if (!push(pileA, pileB) || !push(pileA, pileB))
-			return (free(operations), 0);
-		ft_strlcat(operations, "pb\npb\n", 30000);
-		len = len - 2;
-	}
+	if (ac >= 5)
+		len -= push("pb\n", pileA, pileB, operations, THRESHOLD);
+	if (ac > 5)
+		len -= push("pb\n", pileA, pileB, operations, THRESHOLD);
+	if ((ac == 5 && len != ac - 2) || (ac >= 6 && len != ac - 3))
+		return (free(operations), 0);
 	if (process_t_algo(ac, len, pileA, pileB, &operations))
-		return (ft_printf("%s", operations), free(operations), 1);
-	free(operations);
-	return (0);
+		if (final_process(3, pileA, pileB, &operations))
+			return (ft_printf("%s", operations), free(operations), 1);
+	return (free(operations), 0);
 }

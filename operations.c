@@ -6,13 +6,13 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:50:14 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/07 17:53:00 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/17 03:36:47 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	*update_r_pos(t_pile **pile, int remove)
+static void	update_pos(t_pile **pile, int remove)
 {
 	int		i;
 	t_pile	*node;
@@ -23,7 +23,11 @@ static void	*update_r_pos(t_pile **pile, int remove)
 		((*pile)->previous)->next = (*pile)->next;
 		node = *pile;
 		if ((*pile)->next == *pile)
-			return(free_pile(pile), NULL);
+		{
+			free(*pile);
+			*pile = NULL;
+			return ;
+		}
 		*pile = (*pile)->next;
 		free(node);
 	}
@@ -35,23 +39,23 @@ static void	*update_r_pos(t_pile **pile, int remove)
 		node->pos = i++;
 		node = node->next;
 	}
-	return (NULL);
 }
 
-void	swap(t_pile **pile)
+void	swap(char *name, t_pile **pile, char *operations, int s)
 {
-	int	num_temp;
+	int		num_temp;
 
-	if	(pile == NULL || *pile == NULL || (*pile)->next == *pile)
+	if (pile == NULL || *pile == NULL || (*pile)->next == *pile)
 		return ;
 	if ((*pile)->next == *pile)
 		return ;
 	num_temp = (*pile)->number;
 	(*pile)->number = ((*pile)->next)->number;
 	((*pile)->next)->number = num_temp;
+	ft_strlcat(operations, name, s);
 }
 
-int	push(t_pile **pileA, t_pile **pileB)
+int	push(char *name, t_pile **pileA, t_pile **pileB, char *operations, int s)
 {
 	t_pile	*node;
 
@@ -59,11 +63,11 @@ int	push(t_pile **pileA, t_pile **pileB)
 		return (1);
 	node = (t_pile *)malloc(sizeof(t_pile));
 	if (!node)
-		return  (0);
+		return (0);
 	node->number = (*pileA)->number;
 	node->next = node;
 	node->previous = node;
-	update_r_pos(pileA, 1);
+	update_pos(pileA, 1);
 	if (*pileB)
 	{
 		node->next = *pileB;
@@ -72,21 +76,38 @@ int	push(t_pile **pileA, t_pile **pileB)
 		((node)->previous)->next = node;
 	}
 	*pileB = node;
-	return (update_r_pos(pileB, 0), 1);
+	ft_strlcat(operations, name, s);
+	return (update_pos(pileB, 0), 1);
 }
 
-void	rotate(t_pile **pile)
+void	rotate(int cost, char *name, t_pile **pile, char *operations, int s)
 {
+	int		i;
+
+	i = 0;
 	if (pile == NULL || *pile == NULL)
 		return ;
-	*pile = (*pile)->next;
-	update_r_pos(pile, 0);
+	while (i++ < cost)
+	{
+		*pile = (*pile)->next;
+		ft_strlcat(operations, name, s);
+	}
+	if (cost)
+		update_pos(pile, 0);
 }
 
-void	rev_rotate(t_pile **pile)
+void	rev_rotate(int cost, char *name, t_pile **pile, char *operations, int s)
 {
+	int		i;
+
+	i = 0;
 	if (pile == NULL || *pile == NULL)
 		return ;
-	*pile = (*pile)->previous;
-	update_r_pos(pile, 0);
+	while (i++ < cost)
+	{
+		*pile = (*pile)->previous;
+		ft_strlcat(operations, name, s);
+	}
+	if (cost)
+		update_pos(pile, 0);
 }
