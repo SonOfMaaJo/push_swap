@@ -1,12 +1,10 @@
-NAME		= push_swap
-CC		= cc
-CFLAGS		= -Wall -Wextra -Werror -I includes
+NAME = push_swap
+CC = cc
+CFLAGS	= -Wall -Wextra -Werror -I includes
+SRC_DIR	= srcs
+OBJ_DIR	= objs
+INC_DIR	= includes
 
-SRC_DIR		= srcs
-OBJ_DIR		= objs
-INC_DIR		= includes
-
-# Liste des fichiers sources (basée sur ceux que nous avons manipulés)
 SRCS_FILES	= main.c \
 		  operations.c \
 		  operations_otimized.c \
@@ -23,7 +21,9 @@ SRCS_FILES	= main.c \
 		  ft_putstr.c \
 		  ft_strchr.c \
 		  ft_strlcat.c \
-		  ft_strlen.c
+		  ft_strlen.c \
+		  check_valids.c \
+		  ft_strcmp.c 
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRCS_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS_FILES:.c=.o))

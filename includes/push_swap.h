@@ -6,13 +6,13 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 16:27:55 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/17 03:27:38 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/17 20:29:46 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 # include "ft_printf.h"
-# define THRESHOLD 5500
+# define THRESHOLD 220000
 
 typedef	struct s_pile
 {
@@ -25,9 +25,8 @@ void	swap(char *name, t_pile **pile, char *operations, int s);
 int		push(char *name, t_pile **pileA, t_pile **pileB, char *op, int s);
 void	rotate(int cost, char *name, t_pile **pile, char *operations, int s);
 void	rev_rotate(int cost, char *name, t_pile **pile, char *op, int s);
-void	free_pile(t_pile **pile);
-int		ft_atoi(const char *nptr);
-void	print_pile(t_pile **pile);
+void	*free_pile(t_pile **pile);
+long	ft_atoi(const char *nptr);
 int		check_sort(t_pile **pile);
 char	*rotate_up(int costA, int cost_B, t_pile **pileA, t_pile **pileB);
 char	*rotate_down(int costA, int cost_B, t_pile **pileA, t_pile **pileB);
@@ -40,5 +39,7 @@ int		ccost(int len, int lenB, int pos, int pos_target);
 int		*get_cost(int ac, int len, t_pile **pileA, t_pile **pileB);
 char	*mov(int ac, int len, int *cost, t_pile **pileA, t_pile **pileB);
 int		ft_strlcat(char *dst, const char *src, int size);
+int		ft_strcmp(const char *s1, const char *s2);
+int		*trans_to_p_int(int	ac, char **av);
 
 # endif
