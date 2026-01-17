@@ -1,25 +1,48 @@
-CC = cc
-FLAGS = -Wall -Wextra -Werror -I
-SRCS = srcs
-INCLUDES = includes
-SRCS_FILES = $(shell find $(SRCS) -name "*.c")
-OBJS_FILES = $(SRCS_FILES:.c=.o)
-NAME = libftprintf.a
+NAME		= push_swap
+CC		= cc
+CFLAGS		= -Wall -Wextra -Werror -I includes
 
-all : $(NAME)
+SRC_DIR		= srcs
+OBJ_DIR		= objs
+INC_DIR		= includes
 
-$(NAME) : $(OBJS_FILES)
-	ar rcs $@ $^
+# Liste des fichiers sources (basée sur ceux que nous avons manipulés)
+SRCS_FILES	= main.c \
+		  operations.c \
+		  operations_otimized.c \
+		  process.c \
+		  turk_algorithm.c \
+		  get_target_in_a.c \
+		  ft_atoi.c \
+		  ft_perfdivp.c \
+		  ft_printarg.c \
+		  ft_printf.c \
+		  ft_printp.c \
+		  ft_putchar.c \
+		  ft_putnbrbase.c \
+		  ft_putstr.c \
+		  ft_strchr.c \
+		  ft_strlcat.c \
+		  ft_strlen.c
 
-%.o : %.c
-	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+SRCS		= $(addprefix $(SRC_DIR)/, $(SRCS_FILES))
+OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS_FILES:.c=.o))
 
-clean :
-	rm -f $(OBJS_FILES)
+all: $(NAME)
 
-fclean : clean
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -rf $(OBJ_DIR)
+
+fclean: clean
 	rm -f $(NAME)
 
-re : fclean all
+re: fclean all
 
-.PHONY : all clean fclean re
+.PHONY: all clean fclean re
