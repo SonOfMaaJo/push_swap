@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 23:44:53 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/16 16:16:47 by vnaoussi         ###   ########.fr       */
+/*   Created: 2025/11/11 16:39:22 by vnaoussi          #+#    #+#             */
+/*   Updated: 2026/01/17 18:08:26 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "push_swap.h"
 
-int	ft_strlcat(char *dest, const char *src, int size)
+long	ps_atoi(const char *nptr)
 {
-	int		i;
-	int		j;
-	int		src_len;
+	long	nbr;
+	int	i;
+	int	sign;
 
 	i = 0;
-	if (dest == NULL || src == NULL)
-		return (0);
-	src_len = ft_strlen(src);
-	while (dest[i] && i < size)
+	nbr = 0;
+	sign = 1;
+	while (nptr[i] == ' ' || nptr[i] == '\f' || nptr[i] == '\n'
+		|| nptr[i] == '\r' || nptr[i] == '\t' || nptr[i] == '\v')
 		i++;
-	if (i == size)
-		return (i + src_len);
-	j = 0;
-	while (src[j] && j < size - i - 1)
-	{
-		dest[i + j] = src[j];
-		j++;
-	}
-	dest[i + j] = '\0';
-	return (i + src_len);
+	if (nptr[i] == '-' || nptr[i] == '+')
+		if (nptr[i++] == '-')
+			sign = -1;
+	while (nptr[i] >= '0' && nptr[i] <= '9' && nptr[i])
+		nbr = nbr * 10 + (nptr[i++] - '0');
+	return ((long)sign * nbr);
 }

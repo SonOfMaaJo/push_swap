@@ -6,42 +6,30 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 17:50:14 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/17 03:36:47 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/20 12:23:41 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "push_swap_checker.h"
 
-static void	update_pos(t_pile **pile, int remove)
+static void	remove_head(t_pile **pile)
 {
-	int		i;
 	t_pile	*node;
 
-	if (remove)
+	((*pile)->next)->previous = (*pile)->previous;
+	((*pile)->previous)->next = (*pile)->next;
+	node = *pile;
+	if ((*pile)->next == *pile)
 	{
-		((*pile)->next)->previous = (*pile)->previous;
-		((*pile)->previous)->next = (*pile)->next;
-		node = *pile;
-		if ((*pile)->next == *pile)
-		{
-			free(*pile);
-			*pile = NULL;
-			return ;
-		}
-		*pile = (*pile)->next;
-		free(node);
+		free(*pile);
+		*pile = NULL;
+		return ;
 	}
-	i = 1;
-	(*pile)->pos = i++;
-	node = (*pile)->next;
-	while (node != *pile)
-	{
-		node->pos = i++;
-		node = node->next;
-	}
+	*pile = (*pile)->next;
+	free(node);
 }
 
-void	swap(char *name, t_pile **pile, char *operations, int s)
+void	swap(t_pile **pile)
 {
 	int		num_temp;
 
@@ -52,11 +40,9 @@ void	swap(char *name, t_pile **pile, char *operations, int s)
 	num_temp = (*pile)->number;
 	(*pile)->number = ((*pile)->next)->number;
 	((*pile)->next)->number = num_temp;
-	if (operations)
-		ft_strlcat(operations, name, s);
 }
 
-int	push(char *name, t_pile **pileA, t_pile **pileB, char *operations, int s)
+int	push(t_pile **pileA, t_pile **pileB)
 {
 	t_pile	*node;
 
@@ -68,7 +54,7 @@ int	push(char *name, t_pile **pileA, t_pile **pileB, char *operations, int s)
 	node->number = (*pileA)->number;
 	node->next = node;
 	node->previous = node;
-	update_pos(pileA, 1);
+	remove_head(pileA);
 	if (*pileB)
 	{
 		node->next = *pileB;
@@ -77,41 +63,19 @@ int	push(char *name, t_pile **pileA, t_pile **pileB, char *operations, int s)
 		((node)->previous)->next = node;
 	}
 	*pileB = node;
-	if (operations)
-		ft_strlcat(operations, name, s);
-	return (update_pos(pileB, 0), 1);
+	return (1);
 }
 
-void	rotate(int cost, char *name, t_pile **pile, char *operations, int s)
+void	rotate(t_pile **pile)
 {
-	int		i;
-
-	i = 0;
 	if (pile == NULL || *pile == NULL)
 		return ;
-	while (i++ < cost)
-	{
-		*pile = (*pile)->next;
-		if (operations)
-			ft_strlcat(operations, name, s);
-	}
-	if (cost)
-		update_pos(pile, 0);
+	*pile = (*pile)->next;
 }
 
-void	rev_rotate(int cost, char *name, t_pile **pile, char *operations, int s)
+void	rev_rotate(t_pile **pile)
 {
-	int		i;
-
-	i = 0;
 	if (pile == NULL || *pile == NULL)
 		return ;
-	while (i++ < cost)
-	{
-		*pile = (*pile)->previous;
-		if (operations)
-			ft_strlcat(operations, name, s);
-	}
-	if (cost)
-		update_pos(pile, 0);
+	*pile = (*pile)->previous;
 }
