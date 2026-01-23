@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 18:34:13 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/18 02:34:28 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:53:47 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	ft_len(char **args)
 	i = 0;
 	if (!args)
 		return (0);
-	while(args[i])
+	while (args[i])
 		i++;
 	return (i);
 }

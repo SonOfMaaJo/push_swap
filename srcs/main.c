@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/03 18:21:21 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/18 02:50:12 by vnaoussi         ###   ########.fr       */
+/*   Created: 2026/01/23 16:57:37 by vnaoussi          #+#    #+#             */
+/*   Updated: 2026/01/23 16:58:31 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	*free_pile(t_pile **pile)
 	return (free(node), free(pile), NULL);
 }
 
-static int set_pile(t_pile **head, int size, int *numbers)
+static int	set_pile(t_pile **head, int size, int *numbers)
 {
 	t_pile	*node;
 	int		i;
@@ -71,33 +71,32 @@ void	free_args(char **args)
 	while (args[i++])
 		free(args[i - 1]);
 	free(args);
-
 }
 
 int	main(int ac, char **av)
 {
-	t_pile	**pileA;
-	t_pile	**pileB;
+	t_pile	**pilea;
+	t_pile	**pileb;
 	int		*numbers;
 	int		size;
 
 	if (ac < 2)
 		return (EXIT_SUCCESS);
-	pileA = (t_pile **)malloc(sizeof(t_pile *));
-	if (!pileA)
+	pilea = (t_pile **)malloc(sizeof(t_pile *));
+	if (!pilea)
 		return (ft_printf("Error\n"), 1);
 	numbers = trans_to_p_int(ac, av, &size);
 	if (!numbers)
-		return (ft_printf("Error\n"), free(pileA), 1);
-	pileB = (t_pile **)malloc(sizeof(t_pile *));
-	if (!pileB)
-		return (ft_printf("Error\n"), free(numbers), free(pileA), 1);
-	if (!set_pile(pileA, size, numbers))
-		return(ft_printf("Error\n"), free(pileB), free(pileA), 1);
-	*pileB = NULL;
-	if (!check_sort(pileA))
-		turk_algorithm(size + 1, pileA, pileB);
-	free_pile(pileA);
-	free_pile(pileB);
+		return (ft_printf("Error\n"), free(pilea), 1);
+	pileb = (t_pile **)malloc(sizeof(t_pile *));
+	if (!pileb)
+		return (ft_printf("Error\n"), free(numbers), free(pilea), 1);
+	if (!set_pile(pilea, size, numbers))
+		return (ft_printf("Error\n"), free(pileb), free(pilea), 1);
+	*pileb = NULL;
+	if (!check_sort(pilea))
+		turk_algorithm(size + 1, pilea, pileb);
+	free_pile(pilea);
+	free_pile(pileb);
 	return (EXIT_SUCCESS);
 }

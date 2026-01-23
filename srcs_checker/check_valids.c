@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 18:34:13 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/20 15:19:01 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:08:01 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_valid_ints(char **av)
 {
 	int	i;
 	int	j;
-	int len;
+	int	len;
 
 	i = -1;
 	if (av == NULL || *av == NULL)
@@ -38,9 +38,9 @@ static int	is_valid_ints(char **av)
 			j++;
 		len = ft_strlen(&av[i][j]);
 		if (len > 10 || len == 0
-				|| (len == 10
-					&& ft_strncmp(&av[i][j], "2147483647", 10) > 0
-						&& ft_strncmp(&av[i][j], "2147483648", 10) != 0))
+			|| (len == 10
+				&& ft_strncmp(&av[i][j], "2147483647", 10) > 0
+			&& ft_strncmp(&av[i][j], "2147483648", 10) != 0))
 			return (0);
 		while (av[i][j++])
 			if (!ft_isdigit(av[i][j - 1]))

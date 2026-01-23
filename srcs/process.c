@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 00:05:46 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/08 01:22:32 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:51:04 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ char	*mov(int ac, int len, int *cost, t_pile **pileA, t_pile **pileB)
 		return (rotate_down(len - cost[0] + 1, lenb - cost[1] + 1,
 				pileA, pileB));
 	if (cost[0] - 1 <= len / 2 && cost[1] - 1 > lenb / 2)
-		return (rotate_upA_DB(cost[0] - 1, lenb - cost[1] + 1, pileA, pileB));
+		return (rotate_upa_db(cost[0] - 1, lenb - cost[1] + 1, pileA, pileB));
 	if (cost[0] - 1 > len / 2 && cost[1] - 1 <= lenb / 2)
-		return (rotate_DA_upB(len - cost[0] + 1, cost[1] - 1, pileA, pileB));
+		return (rotate_da_upb(len - cost[0] + 1, cost[1] - 1, pileA, pileB));
 	return (NULL);
 }

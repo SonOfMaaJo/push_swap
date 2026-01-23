@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 01:24:07 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/16 15:26:45 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:47:51 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*rotate_up(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
-	int	min;
-	int	size;
+	int		min;
+	int		size;
 	char	*operations;
 
 	size = (costA + costB) * 4 + 10;
@@ -36,8 +36,8 @@ char	*rotate_up(int costA, int costB, t_pile **pileA, t_pile **pileB)
 
 char	*rotate_down(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
-	int	min;
-	int	size;
+	int		min;
+	int		size;
 	char	*operations;
 
 	size = (costA + costB) * 4 + 10;
@@ -56,9 +56,9 @@ char	*rotate_down(int costA, int costB, t_pile **pileA, t_pile **pileB)
 	return (operations);
 }
 
-char	*rotate_upA_DB(int costA, int costB, t_pile **pileA, t_pile **pileB)
+char	*rotate_upa_da(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
-	int	size;
+	int		size;
 	char	*operations;
 
 	size = (costA + costB) * 4 + 10;
@@ -71,9 +71,9 @@ char	*rotate_upA_DB(int costA, int costB, t_pile **pileA, t_pile **pileB)
 	return (operations);
 }
 
-char	*rotate_DA_upB(int costA, int costB, t_pile **pileA, t_pile **pileB)
+char	*rotate_da_upb(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
-	int	size;
+	int		size;
 	char	*operations;
 
 	size = (costA + costB) * 4 + 10;
@@ -86,7 +86,7 @@ char	*rotate_DA_upB(int costA, int costB, t_pile **pileA, t_pile **pileB)
 	return (operations);
 }
 
-int	ccost(int len, int lenB,  int pos, int pos_target)
+int	ccost(int len, int lenB, int pos, int pos_target)
 {
 	if (pos - 1 <= len / 2 && pos_target - 1 <= lenB / 2)
 	{

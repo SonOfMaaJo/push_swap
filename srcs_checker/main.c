@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 18:21:21 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/20 15:51:20 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:13:19 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,36 +32,36 @@ void	*free_pile(t_pile **pile)
 	return (free(node), free(pile), NULL);
 }
 
-static int set_pile(t_pile **head, int *numbers, int size)
+static int	set_pile(t_pile **head, int *nbs, int size)
 {
 	t_pile	*node;
 	int		i;
 
-	i =  -1;
+	i = -1;
 	node = (t_pile *)malloc(sizeof(t_pile));
 	if (!node)
-		return (free(numbers), 0);
+		return (free(nbs), 0);
 	*head = node;
 	while (++i < size)
 	{
-		node->number = numbers[i];
+		node->number = nbs[i];
 		if (i != size - 1)
 		{
 			node->next = (t_pile *)malloc(sizeof(t_pile));
 			if (!(node->next))
-				return (free(numbers), free_pile(head), 0);
+				return (free(nbs), free_pile(head), 0);
 			(node->next)->previous = node;
 			node = node->next;
 		}
 	}
 	(*head)->previous = node;
 	node->next = *head;
-	return (free(numbers), 1);
+	return (free(nbs), 1);
 }
 
 int	check_sort(t_pile **pile)
 {
-	t_pile *node;
+	t_pile	*node;
 
 	if (!pile || !*pile)
 		return (1);
@@ -89,33 +89,33 @@ void	free_args(char **args)
 
 int	main(int ac, char **av)
 {
-	t_pile	**pileA;
-	t_pile	**pileB;
-	int		**numbers;
+	t_pile	**pilea;
+	t_pile	**pileb;
+	int		**nbs;
 	int		size;
 
 	if (ac < 2)
 		return (EXIT_SUCCESS);
-	numbers = (int **)malloc(sizeof(int *));
-	pileA = (t_pile **)malloc(sizeof(t_pile *));
-	if (!pileA || !numbers)
-		return (ft_printf("Error\n"), free(pileA), free(numbers), 1);
-	size = trans_args_to_pints(ac, av, numbers);
+	nbs = (int **)malloc(sizeof(int *));
+	pilea = (t_pile **)malloc(sizeof(t_pile *));
+	if (!pilea || !nbs)
+		return (ft_printf("Error\n"), free(pilea), free(nbs), 1);
+	size = trans_args_to_pints(ac, av, nbs);
 	if (size == 0)
-		return (ft_printf("Error\n"), free(pileA), free(numbers), 1);
-	pileB = (t_pile **)malloc(sizeof(t_pile *));
-	if (!pileB)
-		return (ft_printf("Error\n"), free(*numbers), free(numbers), free(pileA), 1);
-	if (!set_pile(pileA, *numbers, size))
-		return(ft_printf("Error\n"), free(pileB), free(pileA), 1);
-	*pileB = NULL;
-	if (process_check(pileA, pileB))
+		return (ft_printf("Error\n"), free(pilea), free(nbs), 1);
+	pileb = (t_pile **)malloc(sizeof(t_pile *));
+	if (!pileb)
+		return (ft_printf("Error\n"), free(*nbs), free(nbs), free(pilea), 1);
+	if (!set_pile(pilea, *nbs, size))
+		return (ft_printf("Error\n"), free(pileb), free(pilea), 1);
+	*pileb = NULL;
+	if (process_check(pilea, pileb))
 	{
-		if (check_sort(pileA) && !(*pileB))
-			return(ft_printf("OK\n"), free_pile(pileA), free_pile(pileB), 0);
+		if (check_sort(pilea) && !(*pileb))
+			return (ft_printf("OK\n"), free_pile(pilea), free_pile(pileb), 0);
 		else
-			return(ft_printf("KO\n"), free_pile(pileA), free_pile(pileB), 0);
+			return (ft_printf("KO\n"), free_pile(pilea), free_pile(pileb), 0);
 	}
 	else
-		return(ft_printf("Error\n"), free_pile(pileA), free_pile(pileB), 1);
+		return (ft_printf("Error\n"), free_pile(pilea), free_pile(pileb), 1);
 }

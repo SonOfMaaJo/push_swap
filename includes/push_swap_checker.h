@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 09:32:27 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/20 12:21:17 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:43:39 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PUSH_SWAP_CHECKER_H
 # include "../libft/libft.h"
 
-typedef	struct s_pile
+typedef struct s_pile
 {
 	int				number;
 	struct s_pile	*next;
@@ -31,4 +31,4 @@ int		trans_args_to_pints(int ac, char **av, int **numbers);
 void	free_args(char **args);
 int		process_check(t_pile **pileA, t_pile **pileB);
 
-# endif
+#endif
