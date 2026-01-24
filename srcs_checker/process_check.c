@@ -48,7 +48,8 @@ int	process_check(t_pile **pileA, t_pile **pileB)
 	while (operation)
 	{
 		if (!do_operation(operation, pileA, pileB))
-			return (0);
+			return (free(operation), 0);
+		free(operation);
 		operation = get_next_line(0);
 	}
 	return (1);

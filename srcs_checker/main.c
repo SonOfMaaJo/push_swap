@@ -71,7 +71,8 @@ static int	init_checker(t_pile ***piles, int ***nbs, int ac, char **av)
 		return (ft_printf("Error\n"), free(**nbs), free(*nbs),
 			free(piles[0]), -1);
 	if (!set_pile(piles[0], **nbs, size))
-		return (ft_printf("Error\n"), free(piles[1]), free(piles[0]), -1);
+		return (ft_printf("Error\n"), free(piles[1]), free(piles[0]),
+			free(*nbs), -1);
 	*(piles[1]) = NULL;
 	return (size);
 }
@@ -93,11 +94,11 @@ int	main(int ac, char **av)
 			ft_printf("OK\n");
 		else
 			ft_printf("KO\n");
-		return (free_pile(piles[0]), free_pile(piles[1]), 0);
+		return (free(nbs), free_pile(piles[0]), free_pile(piles[1]), 0);
 	}
 	else
 	{
 		ft_printf("Error\n");
-		return (free_pile(piles[0]), free_pile(piles[1]), 1);
+		return (free(nbs), free_pile(piles[0]), free_pile(piles[1]), 1);
 	}
 }
