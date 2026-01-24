@@ -28,7 +28,7 @@ int	check_sort(t_pile **pile)
 	return (1);
 }
 
-static void	sort_less_three(t_pile **pile, char **operations)
+static void	sort_less_three(t_pile **pile, t_ops *ops)
 {
 	int	n1;
 	int	n2;
@@ -39,78 +39,82 @@ static void	sort_less_three(t_pile **pile, char **operations)
 	if ((*pile)->next == (*pile)->previous)
 	{
 		if (n1 > n2)
-			swap("sa\n", pile, *operations, THRESHOLD);
+			swap("sa\n", pile, ops);
 		return ;
 	}
 	n3 = ((*pile)->previous)->number;
 	if (n1 > n2 && n1 > n3)
-		rotate(1, "ra\n", pile, *operations, THRESHOLD);
+		rotate(1, "ra\n", pile, ops);
 	else if (n2 > n1 && n2 > n3)
-		rev_rotate(1, "rra\n", pile, *operations, THRESHOLD);
+		rev_rotate(1, "rra\n", pile, ops);
 	if ((*pile)->number > ((*pile)->next)->number)
-		swap("sa\n", pile, *operations, THRESHOLD);
+		swap("sa\n", pile, ops);
 }
 
-int	process_t_algo(int ac, int len, t_pile **pileA, t_pile **pileB, char **op)
+int	process_t_algo(int info[2], t_pile **pileA, t_pile **pileB, t_ops *ops)
 {
 	int		*cost;
-	char	*ops;
+	char	*moves;
+	int		next_info[2];
 
-	if (len <= 3)
-		return (sort_less_three(pileA, op), 1);
-	else
-	{
-		cost = get_cost(ac, len, pileA, pileB);
-		if (!cost)
-			return (0);
-		ops = mov(ac, len, cost, pileA, pileB);
-		free(cost);
-		if (!ops)
-			return (0);
-		ft_strlcat(*op, ops, THRESHOLD);
-		free(ops);
-		if (!push("pb\n", pileA, pileB, *op, THRESHOLD))
-			return (0);
-		if (process_t_algo(ac, len - 1, pileA, pileB, op))
-			return (1);
-	}
+	if (info[1] <= 3)
+		return (sort_less_three(pileA, ops), 1);
+	cost = get_cost(info[0], info[1], pileA, pileB);
+	if (!cost)
+		return (0);
+	moves = mov(info, cost, pileA, pileB);
+	free(cost);
+	if (!moves)
+		return (0);
+	ft_strlcat(ops->s, moves, ops->size);
+	free(moves);
+	if (!push("pb\n", pileA, pileB, ops))
+		return (0);
+	next_info[0] = info[0];
+	next_info[1] = info[1] - 1;
+	if (process_t_algo(next_info, pileA, pileB, ops))
+		return (1);
 	return (0);
 }
 
-static int	final_process(int len, t_pile **pileA, t_pile **pileB, char **op)
+static int	final_process(int len, t_pile **pileA, t_pile **pileB, t_ops *ops)
 {
 	int	pos;
 
 	if (*pileB == NULL)
-		return (reorder(len, pileA, op), 1);
+		return (reorder(len, pileA, ops), 1);
 	pos = get_pos_target_in_a((*pileB)->number, pileA);
 	if (pos - 1 <= len / 2)
-		rotate(pos - 1, "ra\n", pileA, *op, THRESHOLD);
+		rotate(pos - 1, "ra\n", pileA, ops);
 	else
-		rev_rotate(len - pos + 1, "rra\n", pileA, *op, THRESHOLD);
-	if (!push("pa\n", pileB, pileA, *op, THRESHOLD))
+		rev_rotate(len - pos + 1, "rra\n", pileA, ops);
+	if (!push("pa\n", pileB, pileA, ops))
 		return (0);
-	return (final_process(len + 1, pileA, pileB, op));
+	return (final_process(len + 1, pileA, pileB, ops));
 }
 
 int	turk_algorithm(int ac, t_pile **pileA, t_pile **pileB)
 {
-	char	*operations;
+	t_ops	ops;
 	int		len;
+	int		info[2];
 
-	operations = (char *)malloc(sizeof(char) * THRESHOLD);
-	if (!operations)
+	ops.size = THRESHOLD;
+	ops.s = (char *)malloc(sizeof(char) * ops.size);
+	if (!ops.s)
 		return (0);
-	operations[0] = '\0';
+	ops.s[0] = '\0';
 	len = ac - 1;
 	if (ac >= 5)
-		len -= push("pb\n", pileA, pileB, operations, THRESHOLD);
+		len -= push("pb\n", pileA, pileB, &ops);
 	if (ac > 5)
-		len -= push("pb\n", pileA, pileB, operations, THRESHOLD);
+		len -= push("pb\n", pileA, pileB, &ops);
 	if ((ac == 5 && len != ac - 2) || (ac >= 6 && len != ac - 3))
-		return (free(operations), 0);
-	if (process_t_algo(ac, len, pileA, pileB, &operations))
-		if (final_process(3, pileA, pileB, &operations))
-			return (ft_printf("%s", operations), free(operations), 1);
-	return (free(operations), 0);
+		return (free(ops.s), 0);
+	info[0] = ac;
+	info[1] = len;
+	if (process_t_algo(info, pileA, pileB, &ops))
+		if (final_process(3, pileA, pileB, &ops))
+			return (ft_printf("%s", ops.s), free(ops.s), 1);
+	return (free(ops.s), 0);
 }

@@ -12,26 +12,6 @@
 
 #include "push_swap_checker.h"
 
-void	*free_pile(t_pile **pile)
-{
-	t_pile	*node;
-	t_pile	*other_node;
-
-	if (pile == NULL)
-		return (NULL);
-	if (*pile == NULL)
-		return (free(pile), NULL);
-	node = (*pile)->next;
-	other_node = NULL;
-	while (node != *pile)
-	{
-		other_node = node->next;
-		free(node);
-		node = other_node;
-	}
-	return (free(node), free(pile), NULL);
-}
-
 static int	set_pile(t_pile **head, int *nbs, int size)
 {
 	t_pile	*node;
@@ -75,47 +55,49 @@ int	check_sort(t_pile **pile)
 	return (1);
 }
 
-void	free_args(char **args)
+static int	init_checker(t_pile ***piles, int ***nbs, int ac, char **av)
 {
-	int	i;
+	int	size;
 
-	i = 0;
-	if (!args)
-		return ;
-	while (args[i++])
-		free(args[i - 1]);
-	free(args);
+	*nbs = (int **)malloc(sizeof(int *));
+	piles[0] = (t_pile **)malloc(sizeof(t_pile *));
+	if (!piles[0] || !*nbs)
+		return (ft_printf("Error\n"), free(piles[0]), free(*nbs), -1);
+	size = trans_args_to_pints(ac, av, *nbs);
+	if (size == 0)
+		return (ft_printf("Error\n"), free(piles[0]), free(*nbs), -1);
+	piles[1] = (t_pile **)malloc(sizeof(t_pile *));
+	if (!piles[1])
+		return (ft_printf("Error\n"), free(**nbs), free(*nbs),
+			free(piles[0]), -1);
+	if (!set_pile(piles[0], **nbs, size))
+		return (ft_printf("Error\n"), free(piles[1]), free(piles[0]), -1);
+	*(piles[1]) = NULL;
+	return (size);
 }
 
 int	main(int ac, char **av)
 {
-	t_pile	**pilea;
-	t_pile	**pileb;
+	t_pile	**piles[2];
 	int		**nbs;
 	int		size;
 
 	if (ac < 2)
 		return (EXIT_SUCCESS);
-	nbs = (int **)malloc(sizeof(int *));
-	pilea = (t_pile **)malloc(sizeof(t_pile *));
-	if (!pilea || !nbs)
-		return (ft_printf("Error\n"), free(pilea), free(nbs), 1);
-	size = trans_args_to_pints(ac, av, nbs);
-	if (size == 0)
-		return (ft_printf("Error\n"), free(pilea), free(nbs), 1);
-	pileb = (t_pile **)malloc(sizeof(t_pile *));
-	if (!pileb)
-		return (ft_printf("Error\n"), free(*nbs), free(nbs), free(pilea), 1);
-	if (!set_pile(pilea, *nbs, size))
-		return (ft_printf("Error\n"), free(pileb), free(pilea), 1);
-	*pileb = NULL;
-	if (process_check(pilea, pileb))
+	size = init_checker(piles, &nbs, ac, av);
+	if (size == -1)
+		return (1);
+	if (process_check(piles[0], piles[1]))
 	{
-		if (check_sort(pilea) && !(*pileb))
-			return (ft_printf("OK\n"), free_pile(pilea), free_pile(pileb), 0);
+		if (check_sort(piles[0]) && !(*(piles[1])))
+			ft_printf("OK\n");
 		else
-			return (ft_printf("KO\n"), free_pile(pilea), free_pile(pileb), 0);
+			ft_printf("KO\n");
+		return (free_pile(piles[0]), free_pile(piles[1]), 0);
 	}
 	else
-		return (ft_printf("Error\n"), free_pile(pilea), free_pile(pileb), 1);
+	{
+		ft_printf("Error\n");
+		return (free_pile(piles[0]), free_pile(piles[1]), 1);
+	}
 }

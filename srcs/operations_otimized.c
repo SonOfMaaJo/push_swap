@@ -6,7 +6,7 @@
 /*   By: vnaoussi <vnaoussi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 01:24:07 by vnaoussi          #+#    #+#             */
-/*   Updated: 2026/01/23 16:47:51 by vnaoussi         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:42:54 by vnaoussi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,23 @@ char	*rotate_up(int costA, int costB, t_pile **pileA, t_pile **pileB)
 	int		min;
 	int		size;
 	char	*operations;
+	t_ops	ops;
 
 	size = (costA + costB) * 4 + 10;
 	operations = (char *)malloc(sizeof(char) * size);
 	if (!operations)
 		return (NULL);
 	operations[0] = '\0';
+	ops.s = operations;
+	ops.size = size;
 	if (costA < costB)
 		min = costA;
 	else
 		min = costB;
-	rotate(min, "rr\n", pileA, operations, size);
-	rotate(min, "rb\n", pileB, NULL, size);
-	rotate(costA - min, "ra\n", pileA, operations, size);
-	rotate(costB - min, "rb\n", pileB, operations, size);
+	rotate(min, "rr\n", pileA, &ops);
+	rotate(min, "rb\n", pileB, NULL);
+	rotate(costA - min, "ra\n", pileA, &ops);
+	rotate(costB - min, "rb\n", pileB, &ops);
 	return (operations);
 }
 
@@ -39,35 +42,41 @@ char	*rotate_down(int costA, int costB, t_pile **pileA, t_pile **pileB)
 	int		min;
 	int		size;
 	char	*operations;
+	t_ops	ops;
 
 	size = (costA + costB) * 4 + 10;
 	operations = (char *)malloc(sizeof(char) * size);
 	if (!operations)
 		return (NULL);
 	operations[0] = '\0';
+	ops.s = operations;
+	ops.size = size;
 	if (costA < costB)
 		min = costA;
 	else
 		min = costB;
-	rev_rotate(min, "rrr\n", pileA, operations, size);
-	rev_rotate(min, "rrb\n", pileB, NULL, size);
-	rev_rotate(costA - min, "rra\n", pileA, operations, size);
-	rev_rotate(costB - min, "rrb\n", pileB, operations, size);
+	rev_rotate(min, "rrr\n", pileA, &ops);
+	rev_rotate(min, "rrb\n", pileB, NULL);
+	rev_rotate(costA - min, "rra\n", pileA, &ops);
+	rev_rotate(costB - min, "rrb\n", pileB, &ops);
 	return (operations);
 }
 
-char	*rotate_upa_da(int costA, int costB, t_pile **pileA, t_pile **pileB)
+char	*rotate_upa_db(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
 	int		size;
 	char	*operations;
+	t_ops	ops;
 
 	size = (costA + costB) * 4 + 10;
 	operations = (char *)malloc(sizeof(char) * size);
 	if (!operations)
 		return (NULL);
 	operations[0] = '\0';
-	rotate(costA, "ra\n", pileA, operations, size);
-	rev_rotate(costB, "rrb\n", pileB, operations, size);
+	ops.s = operations;
+	ops.size = size;
+	rotate(costA, "ra\n", pileA, &ops);
+	rev_rotate(costB, "rrb\n", pileB, &ops);
 	return (operations);
 }
 
@@ -75,14 +84,17 @@ char	*rotate_da_upb(int costA, int costB, t_pile **pileA, t_pile **pileB)
 {
 	int		size;
 	char	*operations;
+	t_ops	ops;
 
 	size = (costA + costB) * 4 + 10;
 	operations = (char *)malloc(sizeof(char) * size);
 	if (!operations)
 		return (NULL);
 	operations[0] = '\0';
-	rev_rotate(costA, "rra\n", pileA, operations, size);
-	rotate(costB, "rb\n", pileB, operations, size);
+	ops.s = operations;
+	ops.size = size;
+	rev_rotate(costA, "rra\n", pileA, &ops);
+	rotate(costB, "rb\n", pileB, &ops);
 	return (operations);
 }
 

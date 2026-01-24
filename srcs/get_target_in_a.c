@@ -34,7 +34,7 @@ static t_pile	**get_min_max(t_pile **pile)
 	return (min_max);
 }
 
-void	reorder(int len, t_pile **pile, char **operations)
+void	reorder(int len, t_pile **pile, t_ops *ops)
 {
 	t_pile	*min;
 	t_pile	*node;
@@ -48,9 +48,9 @@ void	reorder(int len, t_pile **pile, char **operations)
 		node = node->next;
 	}
 	if (min->pos - 1 <= len / 2)
-		rotate(min->pos - 1, "ra\n", pile, *operations, THRESHOLD);
+		rotate(min->pos - 1, "ra\n", pile, ops);
 	else
-		rev_rotate(len - min->pos + 1, "rra\n", pile, *operations, THRESHOLD);
+		rev_rotate(len - min->pos + 1, "rra\n", pile, ops);
 }
 
 int	get_pos_target_in_a(int number, t_pile **pileA)

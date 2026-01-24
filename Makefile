@@ -22,7 +22,8 @@ SRCS_FILES	= main.c \
 SRCS_CHECKER_FILES = main.c \
 					check_valids.c \
 					operations.c \
-					process_check.c
+					process_check.c \
+					utils.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRCS_FILES))
 SRCS_CHECKER = $(addprefix $(SRC_CHECKER_DIR)/, $(SRCS_CHECKER_FILES))
@@ -31,7 +32,7 @@ OBJS_CHECKER = $(addprefix $(OBJ_CHECKER_DIR)/, $(SRCS_CHECKER_FILES:.c=.o))
 
 all: $(NAME)
 
-checker_all : $(NAME_CHECKER)
+bonus: $(NAME_CHECKER)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
@@ -60,6 +61,6 @@ fclean: clean
 	rm -f $(NAME_CHECKER)
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
-re: fclean all all_checker
+re: fclean all bonus
 
 .PHONY: all clean fclean re

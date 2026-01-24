@@ -2,3 +2,5 @@ objs/
 out
 push_swap
 libftprintf.a
+checker
+objs_checker/

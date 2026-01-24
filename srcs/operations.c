@@ -41,7 +41,7 @@ static void	update_pos(t_pile **pile, int remove)
 	}
 }
 
-void	swap(char *name, t_pile **pile, char *operations, int s)
+void	swap(char *name, t_pile **pile, t_ops *ops)
 {
 	int		num_temp;
 
@@ -52,11 +52,11 @@ void	swap(char *name, t_pile **pile, char *operations, int s)
 	num_temp = (*pile)->number;
 	(*pile)->number = ((*pile)->next)->number;
 	((*pile)->next)->number = num_temp;
-	if (operations)
-		ft_strlcat(operations, name, s);
+	if (ops && ops->s)
+		ft_strlcat(ops->s, name, ops->size);
 }
 
-int	push(char *name, t_pile **pileA, t_pile **pileB, char *operations, int s)
+int	push(char *name, t_pile **pileA, t_pile **pileB, t_ops *ops)
 {
 	t_pile	*node;
 
@@ -77,12 +77,12 @@ int	push(char *name, t_pile **pileA, t_pile **pileB, char *operations, int s)
 		((node)->previous)->next = node;
 	}
 	*pileB = node;
-	if (operations)
-		ft_strlcat(operations, name, s);
+	if (ops && ops->s)
+		ft_strlcat(ops->s, name, ops->size);
 	return (update_pos(pileB, 0), 1);
 }
 
-void	rotate(int cost, char *name, t_pile **pile, char *operations, int s)
+void	rotate(int cost, char *name, t_pile **pile, t_ops *ops)
 {
 	int		i;
 
@@ -92,14 +92,14 @@ void	rotate(int cost, char *name, t_pile **pile, char *operations, int s)
 	while (i++ < cost)
 	{
 		*pile = (*pile)->next;
-		if (operations)
-			ft_strlcat(operations, name, s);
+		if (ops && ops->s)
+			ft_strlcat(ops->s, name, ops->size);
 	}
 	if (cost)
 		update_pos(pile, 0);
 }
 
-void	rev_rotate(int cost, char *name, t_pile **pile, char *operations, int s)
+void	rev_rotate(int cost, char *name, t_pile **pile, t_ops *ops)
 {
 	int		i;
 
@@ -109,8 +109,8 @@ void	rev_rotate(int cost, char *name, t_pile **pile, char *operations, int s)
 	while (i++ < cost)
 	{
 		*pile = (*pile)->previous;
-		if (operations)
-			ft_strlcat(operations, name, s);
+		if (ops && ops->s)
+			ft_strlcat(ops->s, name, ops->size);
 	}
 	if (cost)
 		update_pos(pile, 0);
