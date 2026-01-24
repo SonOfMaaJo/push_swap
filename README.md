@@ -30,17 +30,42 @@ Run the program by passing a list of integers as arguments:
 
 The program will output the list of operations required to sort the stack.
 
-**Examples:**
+## Testing
+
+### Compilation (Bonus)
+
+To test the results with the provided (or custom) checker, compile the bonus:
 
 ```bash
-# Sort a small list
-./push_swap 5 2 3 1 4
+make bonus
+```
 
-# Handle negative numbers
-./push_swap -10 50 -2 0
+### Basic Testing
 
-# Check instruction count (if you have wc)
-./push_swap 90 23 4 81 12 0 -5 100 55 7 | wc -l
+You can pipe the output of `push_swap` into the `checker` to verify if the list is correctly sorted:
+
+```bash
+# Basic check
+ARG="4 67 3 87 23"; ./push_swap $ARG | ./checker $ARG
+
+# Test with 100 random numbers
+ARG=$(seq -1000 1000 | shuf -n 100 | xargs); ./push_swap $ARG | ./checker $ARG
+
+# Test with 500 random numbers and count operations
+ARG=$(seq -1000 1000 | shuf -n 500 | xargs); ./push_swap $ARG | ./checker $ARG
+./push_swap $ARG | wc -l
+```
+
+### Memory Leaks (Valgrind)
+
+To ensure there are no memory leaks, use `valgrind`:
+
+```bash
+# Check push_swap for leaks
+ARG=$(seq -1000 1000 | shuf -n 100 | xargs); valgrind --leak-check=full ./push_swap $ARG
+
+# Check checker for leaks (using a pipe)
+ARG=$(seq -1000 1000 | shuf -n 100 | xargs); ./push_swap $ARG | valgrind --leak-check=full ./checker $ARG
 ```
 
 ### Error Management
